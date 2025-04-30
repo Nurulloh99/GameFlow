@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace GameFlow.Dal.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreation : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,8 +15,7 @@ namespace GameFlow.Dal.Migrations
                 name: "Games",
                 columns: table => new
                 {
-                    GameId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GameName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     GameKey = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     GameDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
@@ -29,10 +29,9 @@ namespace GameFlow.Dal.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    GenreId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GenreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GenreName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ParentGenreId = table.Column<long>(type: "bigint", nullable: true)
+                    ParentGenreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,8 +48,7 @@ namespace GameFlow.Dal.Migrations
                 name: "Platforms",
                 columns: table => new
                 {
-                    PlatformId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlatformId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlatformType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -62,8 +60,8 @@ namespace GameFlow.Dal.Migrations
                 name: "GameGenres",
                 columns: table => new
                 {
-                    GameId = table.Column<long>(type: "bigint", nullable: false),
-                    GenreId = table.Column<long>(type: "bigint", nullable: false)
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GenreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,8 +84,8 @@ namespace GameFlow.Dal.Migrations
                 name: "GamePlatforms",
                 columns: table => new
                 {
-                    GameId = table.Column<long>(type: "bigint", nullable: false),
-                    PlatformId = table.Column<long>(type: "bigint", nullable: false)
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlatformId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
