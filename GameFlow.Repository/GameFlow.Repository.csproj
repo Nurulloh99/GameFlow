@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="yengi\**" />
+    <EmbeddedResource Remove="yengi\**" />
+    <None Remove="yengi\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GameFlow.Dal\GameFlow.Dal.csproj" />
   </ItemGroup>
 
