@@ -1,6 +1,8 @@
-﻿namespace GameFlow.Dal.Entities;
+﻿using GameFlow.Dal.Entities;
 
-public class Platform
+namespace GameFlow.Bll.DTOs;
+
+public class PlatformGetDto
 {
     public long PlatformId { get; set; }
     public string PlatformType { get; set; }
