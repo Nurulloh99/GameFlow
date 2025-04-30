@@ -10,4 +10,10 @@
     <ProjectReference Include="..\GameFlow.Repository\GameFlow.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="MappingProfiles\" />
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
 </Project>
