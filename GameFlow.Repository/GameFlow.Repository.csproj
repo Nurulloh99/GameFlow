@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameFlow.Dal\GameFlow.Dal.csproj" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\GameFlow.Dal\GameFlow.Dal.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ public class PlatformService : IPlatformService
     {
         throw new NotImplementedException();
     }
-
+    
     public Task<ICollection<PlatformGetDto>> GetAllPlatformsAsync()
     {
         throw new NotImplementedException();
