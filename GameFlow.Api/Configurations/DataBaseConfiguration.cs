@@ -9,6 +9,6 @@ public static class DataBaseConfiguration
     {
         var connectionString = builder.Configuration.GetConnectionString("DataBaseConnection");
         builder.Services.AddDbContext<MainContext>(options =>
-        options.UseSqlServer(connectionString));
+                 options.UseSqlServer(connectionString));
     }
 }

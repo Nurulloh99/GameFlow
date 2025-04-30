@@ -1,13 +1,30 @@
 ﻿using System.Web.Mvc;
 using GameFlow.Bll.DTOs;
+using GameFlow.Dal;
+using GameFlow.Dal.Entities;
+using GameFlow.Repository.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameFlow.Bll.Services;
 
-public class GameService : IGameService
+public class GameService(IGameRepository _gameRepository, MainContext _context) : IGameService
 {
-    public Task AddGameAsync(GameCreateDto gameDto)
+    public async Task AddGameAsync(GameCreateDto gameDto)
     {
-        throw new NotImplementedException();
+        if(gameDto == null)
+            throw new ArgumentNullException(nameof(gameDto));
+
+        var game = new Game
+        {
+            GameDescription = gameDto.GameDescription,
+            GameName = gameDto.GameName,
+            GameKey = gameDto.GameKey,
+            GameGenres = GetAllGameGenres(gameDto),
+            GamePlatforms = GetAllGamePlatforms(gameDto),
+
+        };
+
+        await _gameRepository.InsertGameAsync(game);
     }
 
     public Task DeleteGameAsync(string key)
@@ -25,7 +42,7 @@ public class GameService : IGameService
         throw new NotImplementedException();
     }
 
-    public Task<GameGetDto> GetGameByIdAsync(long id)
+    public Task<GameGetDto> GetGameByIdAsync(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -35,12 +52,12 @@ public class GameService : IGameService
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(long genreId)
+    public Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(long platformId)
+    public Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(Guid platformId)
     {
         throw new NotImplementedException();
     }
@@ -48,5 +65,35 @@ public class GameService : IGameService
     public Task UpdateGameAsync(GameGetDto gameDto)
     {
         throw new NotImplementedException();
+    }
+
+    public ICollection<GameGenre> GetAllGameGenres(GameCreateDto gameDto)
+    {
+        var genres = _context.GameGenres.ToList();
+        List<GameGenre> GameGenres = new List<GameGenre>();
+
+        foreach (var genre in gameDto.GameGenres)
+        {
+            var g = genres.FirstOrDefault (x => x.GenreId == genre);
+            if (g is not null)
+                GameGenres.Add(g);
+        }
+
+        return GameGenres;
+    }
+
+    public ICollection<GamePlatform> GetAllGamePlatforms(GameCreateDto gameDto)
+    {
+        var platforms = _context.GamePlatforms.ToList();
+        List<GamePlatform> GamePlatforms = new List<GamePlatform>();
+
+        foreach (var platform in gameDto.GamePlatforms)
+        {
+            var g = platforms.FirstOrDefault(x => x.PlatformId == platform);
+            if (g is not null)
+                GamePlatforms.Add(g);
+        }
+
+        return GamePlatforms;
     }
 }

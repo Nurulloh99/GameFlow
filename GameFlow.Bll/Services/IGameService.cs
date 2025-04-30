@@ -7,9 +7,9 @@ public interface IGameService
 {
     Task AddGameAsync(GameCreateDto gameDto);
     Task<GameGetDto> GetGameByKeyAsync(string key);
-    Task<GameGetDto> GetGameByIdAsync(long id);
-    Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(long platformId);
-    Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(long genreId);
+    Task<GameGetDto> GetGameByIdAsync(Guid id);
+    Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(Guid platformId);
+    Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId);
     Task UpdateGameAsync(GameGetDto gameDto);
     Task DeleteGameAsync(string key);
     Task<FileContentResult> DownloadGameFileAsync(string key);

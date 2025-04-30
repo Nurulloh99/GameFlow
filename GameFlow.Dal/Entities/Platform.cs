@@ -2,7 +2,7 @@
 
 public class Platform
 {
-    public long PlatformId { get; set; }
+    public Guid PlatformId { get; set; }
     public string PlatformType { get; set; }
 
     public ICollection<GamePlatform> GamePlatforms { get; set; }

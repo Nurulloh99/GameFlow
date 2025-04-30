@@ -9,7 +9,7 @@ public class PlatformService : IPlatformService
         throw new NotImplementedException();
     }
 
-    public Task DeletePlatformAsync(long id)
+    public Task DeletePlatformAsync(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -19,7 +19,7 @@ public class PlatformService : IPlatformService
         throw new NotImplementedException();
     }
 
-    public Task<PlatformGetDto> GetPlatformByIdAsync(long id)
+    public Task<PlatformGetDto> GetPlatformByIdAsync(Guid id)
     {
         throw new NotImplementedException();
     }
