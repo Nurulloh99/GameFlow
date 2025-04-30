@@ -7,7 +7,6 @@ namespace GameFlow.Dal;
 
 public class MainContext : DbContext
 {
-
     public DbSet<Game> Games { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Platform> Platforms { get; set; }
@@ -18,7 +17,6 @@ public class MainContext : DbContext
         : base(options)
     {
     }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

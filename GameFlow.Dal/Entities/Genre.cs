@@ -2,10 +2,10 @@
 
 public class Genre
 {
-    public long GenreId { get; set; }
+    public Guid GenreId { get; set; }
     public string GenreName { get; set; }
 
-    public long? ParentGenreId { get; set; }
+    public Guid? ParentGenreId { get; set; }
     public Genre? ParentGenre { get; set; }
 
     public ICollection<Genre> SubGenres { get; set; }

@@ -9,7 +9,7 @@ public class GenreService : IGenreService
         throw new NotImplementedException();
     }
 
-    public Task DeleteGenreAsync(long id)
+    public Task DeleteGenreAsync(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -19,7 +19,7 @@ public class GenreService : IGenreService
         throw new NotImplementedException();
     }
 
-    public Task<GenreGetDto> GetGenreByIdAsync(long id)
+    public Task<GenreGetDto> GetGenreByIdAsync(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -29,7 +29,7 @@ public class GenreService : IGenreService
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<GenreGetDto>> GetSubgenresByParentIdAsync(long parentId)
+    public Task<ICollection<GenreGetDto>> GetSubgenresByParentIdAsync(Guid parentId)
     {
         throw new NotImplementedException();
     }

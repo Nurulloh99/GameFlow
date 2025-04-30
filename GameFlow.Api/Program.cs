@@ -1,28 +1,20 @@
+using GameFlow.Bll;
+using GameFlow.Repository;
 using Instagram.Server.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
+builder.Services.AddBllServices();
+builder.Services.AddRepositoryServices();
 
 builder.ConfigureDatabase();
-//builder.ConfigureValidators();
-//builder.ConfigureAutoMapper();
-//builder.ConfigureDependencyInjection();
-
-
-
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

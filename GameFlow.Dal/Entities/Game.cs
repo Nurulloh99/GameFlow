@@ -2,7 +2,7 @@
 
 public class Game
 {
-    public long GameId { get; set; }
+    public Guid GameId { get; set; }
     public string GameName { get; set; }
     public string GameKey { get; set; }
     public string? GameDescription { get; set; }

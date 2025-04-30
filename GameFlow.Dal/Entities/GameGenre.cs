@@ -2,9 +2,9 @@
 
 public class GameGenre
 {
-    public long GameId { get; set; }
+    public Guid GameId { get; set; }
     public Game Game { get; set; }
 
-    public long GenreId { get; set; }
+    public Guid GenreId { get; set; }
     public Genre Genre { get; set; }
 }
