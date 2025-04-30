@@ -1,6 +1,8 @@
-﻿namespace GameFlow.Dal.Entities;
+﻿using GameFlow.Dal.Entities;
 
-public class Genre
+namespace GameFlow.Bll.DTOs;
+
+public class GenreGetDto
 {
     public long GenreId { get; set; }
     public string GenreName { get; set; }
