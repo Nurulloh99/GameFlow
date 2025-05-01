@@ -93,9 +93,12 @@ public class GameService : IGameService
         return gameDtos;
     }
 
-    public Task UpdateGameAsync(GameGetDto gameDto)
+    public async Task UpdateGameAsync(GameGetDto gameDto)
     {
-        throw new NotImplementedException();
+        if (gameDto == null)
+            throw new ArgumentNullException(nameof(gameDto));
+        var game = ConvertToGetGame(gameDto);
+        await _gameRepository.UpdateGameAsync(game);
     }
 
     public ICollection<GameGenre> GetAllGameGenres(GameCreateDto gameDto)

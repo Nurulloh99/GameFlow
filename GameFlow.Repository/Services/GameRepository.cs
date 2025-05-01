@@ -69,8 +69,14 @@ public class GameRepository : IGameRepository
         return gamesByPlatformId;
     }
 
-    public Task UpdateGameAsync(Game gameDto)
+    public async Task UpdateGameAsync(Game gameDto)
     {
-        throw new NotImplementedException();
+        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.Id == gameDto.Id);
+        if (game == null)
+            throw new ArgumentNullException(nameof(game));
+        game.Name = gameDto.GameName;
+        game.Description = gameDto.GameDescription;
+        game.GameKey = gameDto.GameKey;
+        await _mainContext.SaveChangesAsync();
     }
 }
