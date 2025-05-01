@@ -51,9 +51,13 @@ public class GameRepository : IGameRepository
         return gameByKey;
     }
 
-    public Task<ICollection<Game>> SelectGamesByGenreIdAsync(Guid genreId)
+    public async Task<ICollection<Game>> SelectGamesByGenreIdAsync(Guid genreId)
     {
-        throw new NotImplementedException();
+        var games = _mainContext.Games;
+        var gamesByGenreId = await games.Where(x => x.GameGenres.Any(y => y.GenreId == genreId)).ToListAsync();
+        if (gamesByGenreId == null)
+            throw new ArgumentNullException(nameof(gamesByGenreId));
+        return gamesByGenreId;
     }
 
     public async Task<ICollection<Game>> SelectGamesByPlatformIdAsync(Guid platformId)
@@ -65,8 +69,14 @@ public class GameRepository : IGameRepository
         return gamesByPlatformId;
     }
 
-    public Task UpdateGameAsync(Game gameDto)
+    public async Task UpdateGameAsync(Game gameDto)
     {
-        throw new NotImplementedException();
+        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.Id == gameDto.Id);
+        if (game == null)
+            throw new ArgumentNullException(nameof(game));
+        game.Name = gameDto.GameName;
+        game.Description = gameDto.GameDescription;
+        game.GameKey = gameDto.GameKey;
+        await _mainContext.SaveChangesAsync();
     }
 }
