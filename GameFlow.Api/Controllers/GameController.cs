@@ -24,12 +24,10 @@ public class GameController(IGameService _gameService) : ControllerBase
 
         return Ok(game);
     }
-
     [HttpGet("/games/find/{id}")]
-    public async Task<ActionResult<GameGetDto>> GetGameByIdAsync(Guid Id)
+    public async Task<ActionResult<GameGetDto>> GetGameByIdAsync(Guid id)
     {
-        var game = await _gameService.GetGameByIdAsync(Id);
-
+        var game = await _gameService.GetGameByIdAsync(id);
         return Ok(game);
     }
 

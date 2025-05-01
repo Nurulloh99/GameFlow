@@ -42,9 +42,20 @@ public class GameService(IGameRepository _gameRepository, MainContext _context) 
         throw new NotImplementedException();
     }
 
-    public Task<GameGetDto> GetGameByIdAsync(Guid id)
+    public async Task<GameGetDto> GetGameByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var game = await _context.Games.FindAsync(id);
+        if (game == null)
+            throw new ArgumentNullException(nameof(game));
+        return new GameGetDto
+        {
+            GameId = game.GameId,
+            GameName = game.GameName,
+            GameKey = game.GameKey,
+            GameDescription = game.GameDescription,
+            //GameGenres = game.GameGenres,
+            //GamePlatforms = game.GamePlatforms
+        };
     }
 
     public Task<GameGetDto> GetGameByKeyAsync(string key)
