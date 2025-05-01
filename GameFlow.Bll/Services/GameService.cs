@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using AutoMapper;
 using GameFlow.Bll.DTOs;
-using GameFlow.Bll.MappingProfiles;
 using GameFlow.Dal;
 using GameFlow.Dal.Entities;
 using GameFlow.Repository.Services;
@@ -13,13 +12,12 @@ public class GameService : IGameService
 {
     private readonly IGameRepository _gameRepository;
     private readonly MainContext _context;
-    private readonly IMapper _mappingProfiles;
 
-    public GameService(IGameRepository gameRepository, MainContext context, AutoMapping _mappingProfiles)
+    public GameService(IGameRepository gameRepository, MainContext context)
     {
         _gameRepository = gameRepository;
         _context = context;
-        _mappingProfiles = _mappingProfiles;
+        
     }
 
     public async Task AddGameAsync(GameCreateDto gameDto)
@@ -69,7 +67,7 @@ public class GameService : IGameService
         if (game == null)
             throw new KeyNotFoundException($"Game with key '{key}' not found.");
 
-        var gameDto = _mappingProfiles.Map<GameGetDto>(game);
+        var gameDto = ConvertToGameGetDto(game);
         return gameDto;
     }
 
@@ -117,4 +115,27 @@ public class GameService : IGameService
 
         return GamePlatforms;
     }
+
+    private GameGetDto ConvertToGameGetDto(Game game)
+    {
+        return new GameGetDto
+        {
+            GameId = game.GameId,
+            GameName = game.GameName,
+            GameDescription = game.GameDescription,
+            GameKey = game.GameKey
+        };
+    }
+
+    private Game ConvertToGetGame(GameGetDto gameDto)
+    {
+        return new Game
+        {
+            GameId = gameDto.GameId,
+            GameName = gameDto.GameName,
+            GameDescription = gameDto.GameDescription,
+            GameKey = gameDto.GameKey
+        };
+    }
+
 }

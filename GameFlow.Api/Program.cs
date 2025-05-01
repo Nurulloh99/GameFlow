@@ -1,12 +1,14 @@
 using GameFlow.Bll;
 using GameFlow.Repository;
 using Instagram.Server.Configurations;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddBllServices();
 builder.Services.AddRepositoryServices();

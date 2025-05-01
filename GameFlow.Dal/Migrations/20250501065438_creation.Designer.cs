@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameFlow.Dal.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20250430171745_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250501065438_creation")]
+    partial class creation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
