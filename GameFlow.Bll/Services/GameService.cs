@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using GameFlow.Bll.DTOs;
 using GameFlow.Dal;
 using GameFlow.Dal.Entities;
@@ -7,8 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameFlow.Bll.Services;
 
-public class GameService(IGameRepository _gameRepository, MainContext _context) : IGameService
+public class GameService : IGameService
 {
+    private readonly IGameRepository _gameRepository;
+    private readonly MainContext _context;
+
+    public GameService(IGameRepository gameRepository, MainContext context)
+    {
+        _gameRepository = gameRepository;
+        _context = context;
+        
+    }
+
     public async Task AddGameAsync(GameCreateDto gameDto)
     {
         if(gameDto == null)
@@ -47,9 +58,17 @@ public class GameService(IGameRepository _gameRepository, MainContext _context) 
         throw new NotImplementedException();
     }
 
-    public Task<GameGetDto> GetGameByKeyAsync(string key)
+    public async Task<GameGetDto> GetGameByKeyAsync(string key)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(key))
+            throw new ArgumentNullException(nameof(key));
+
+        var game = await _gameRepository.SelectGameByKeyAsync(key);
+        if (game == null)
+            throw new KeyNotFoundException($"Game with key '{key}' not found.");
+
+        var gameDto = ConvertToGameGetDto(game);
+        return gameDto;
     }
 
     public Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId)
@@ -96,4 +115,27 @@ public class GameService(IGameRepository _gameRepository, MainContext _context) 
 
         return GamePlatforms;
     }
+
+    private GameGetDto ConvertToGameGetDto(Game game)
+    {
+        return new GameGetDto
+        {
+            GameId = game.GameId,
+            GameName = game.GameName,
+            GameDescription = game.GameDescription,
+            GameKey = game.GameKey
+        };
+    }
+
+    private Game ConvertToGetGame(GameGetDto gameDto)
+    {
+        return new Game
+        {
+            GameId = gameDto.GameId,
+            GameName = gameDto.GameName,
+            GameDescription = gameDto.GameDescription,
+            GameKey = gameDto.GameKey
+        };
+    }
+
 }
