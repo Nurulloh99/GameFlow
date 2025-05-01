@@ -1,11 +1,18 @@
 ﻿using System.Web.Mvc;
 using GameFlow.Dal;
 using GameFlow.Dal.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameFlow.Repository.Services;
 
-public class GameRepository(MainContext _mainContext) : IGameRepository
+public class GameRepository : IGameRepository
 {
+    private readonly MainContext _mainContext;
+
+    public GameRepository(MainContext mainContext)
+    {
+        _mainContext = mainContext;
+    }
 
     public Task DeleteGameAsync(string key)
     {
@@ -33,9 +40,15 @@ public class GameRepository(MainContext _mainContext) : IGameRepository
         throw new NotImplementedException();
     }
 
-    public Task<Game> SelectGameByKeyAsync(string key)
+    public async Task<Game> SelectGameByKeyAsync(string key)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(key))
+            throw new ArgumentNullException(nameof(key));
+        var game =  _mainContext.Games;
+        var gameByKey = await game.FirstOrDefaultAsync(x => x.GameKey == key);
+        if (gameByKey == null)
+            throw new ArgumentNullException(nameof(gameByKey));
+        return gameByKey;
     }
 
     public Task<ICollection<Game>> SelectGamesByGenreIdAsync(Guid genreId)

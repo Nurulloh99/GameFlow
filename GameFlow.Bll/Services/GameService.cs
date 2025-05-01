@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using GameFlow.Bll.DTOs;
+using GameFlow.Bll.MappingProfiles;
 using GameFlow.Dal;
 using GameFlow.Dal.Entities;
 using GameFlow.Repository.Services;
@@ -7,8 +9,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameFlow.Bll.Services;
 
-public class GameService(IGameRepository _gameRepository, MainContext _context) : IGameService
+public class GameService : IGameService
 {
+    private readonly IGameRepository _gameRepository;
+    private readonly MainContext _context;
+    private readonly IMapper _mappingProfiles;
+
+    public GameService(IGameRepository gameRepository, MainContext context, AutoMapping _mappingProfiles)
+    {
+        _gameRepository = gameRepository;
+        _context = context;
+        _mappingProfiles = _mappingProfiles;
+    }
+
     public async Task AddGameAsync(GameCreateDto gameDto)
     {
         if(gameDto == null)
@@ -47,9 +60,17 @@ public class GameService(IGameRepository _gameRepository, MainContext _context) 
         throw new NotImplementedException();
     }
 
-    public Task<GameGetDto> GetGameByKeyAsync(string key)
+    public async Task<GameGetDto> GetGameByKeyAsync(string key)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(key))
+            throw new ArgumentNullException(nameof(key));
+
+        var game = await _gameRepository.SelectGameByKeyAsync(key);
+        if (game == null)
+            throw new KeyNotFoundException($"Game with key '{key}' not found.");
+
+        var gameDto = _mappingProfiles.Map<GameGetDto>(game);
+        return gameDto;
     }
 
     public Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId)
