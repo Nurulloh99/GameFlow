@@ -56,9 +56,13 @@ public class GameRepository : IGameRepository
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<Game>> SelectGamesByPlatformIdAsync(Guid platformId)
+    public async Task<ICollection<Game>> SelectGamesByPlatformIdAsync(Guid platformId)
     {
-        throw new NotImplementedException();
+        var games = _mainContext.Games;
+        var gamesByPlatformId = await games.Where(x => x.GamePlatforms.Any(y => y.PlatformId == platformId)).ToListAsync();
+        if (gamesByPlatformId == null)
+            throw new ArgumentNullException(nameof(gamesByPlatformId));
+        return gamesByPlatformId;
     }
 
     public Task UpdateGameAsync(Game gameDto)
