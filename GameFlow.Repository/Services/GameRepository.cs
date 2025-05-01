@@ -35,9 +35,12 @@ public class GameRepository : IGameRepository
         throw new NotImplementedException();
     }
 
-    public Task<Game> SelectGameByIdAsync(Guid id)
+    public async Task<Game> SelectGameByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+       var game = await _mainContext.Games.FindAsync(id);
+        if (game == null)
+            throw new ArgumentNullException(nameof(game));
+        return game;
     }
 
     public async Task<Game> SelectGameByKeyAsync(string key)
