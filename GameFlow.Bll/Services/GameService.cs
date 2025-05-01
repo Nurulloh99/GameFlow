@@ -71,9 +71,15 @@ public class GameService : IGameService
         return gameDto;
     }
 
-    public Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId)
+    public async Task<ICollection<GameGetDto>> GetGamesByGenreIdAsync(Guid genreId)
     {
-        throw new NotImplementedException();
+        if (genreId == Guid.Empty)
+            throw new ArgumentNullException(nameof(genreId));
+        var games = await _gameRepository.SelectGamesByGenreIdAsync(genreId);
+        if (games == null || !games.Any())
+            throw new KeyNotFoundException($"No games found for genre ID '{genreId}'.");
+        var gameDtos = games.Select(ConvertToGameGetDto).ToList();
+        return gameDtos;
     }
 
     public async Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(Guid platformId)

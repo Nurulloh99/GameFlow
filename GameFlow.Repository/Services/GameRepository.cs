@@ -51,9 +51,13 @@ public class GameRepository : IGameRepository
         return gameByKey;
     }
 
-    public Task<ICollection<Game>> SelectGamesByGenreIdAsync(Guid genreId)
+    public async Task<ICollection<Game>> SelectGamesByGenreIdAsync(Guid genreId)
     {
-        throw new NotImplementedException();
+        var games = _mainContext.Games;
+        var gamesByGenreId = await games.Where(x => x.GameGenres.Any(y => y.GenreId == genreId)).ToListAsync();
+        if (gamesByGenreId == null)
+            throw new ArgumentNullException(nameof(gamesByGenreId));
+        return gamesByGenreId;
     }
 
     public async Task<ICollection<Game>> SelectGamesByPlatformIdAsync(Guid platformId)
