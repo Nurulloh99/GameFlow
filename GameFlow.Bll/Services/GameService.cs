@@ -76,9 +76,15 @@ public class GameService : IGameService
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(Guid platformId)
+    public async Task<ICollection<GameGetDto>> GetGamesByPlatformIdAsync(Guid platformId)
     {
-        throw new NotImplementedException();
+        if (platformId == Guid.Empty)
+            throw new ArgumentNullException(nameof(platformId));
+        var games = await _gameRepository.SelectGamesByPlatformIdAsync(platformId);
+        if (games == null || !games.Any())
+            throw new KeyNotFoundException($"No games found for platform ID '{platformId}'.");
+        var gameDtos = games.Select(ConvertToGameGetDto).ToList();
+        return gameDtos;
     }
 
     public Task UpdateGameAsync(GameGetDto gameDto)
