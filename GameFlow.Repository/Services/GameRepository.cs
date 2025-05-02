@@ -19,9 +19,19 @@ public class GameRepository : IGameRepository
         throw new NotImplementedException();
     }
 
-    public Task<FileContentResult> DownloadGameFileAsync(string key)
+    public async Task<FileContentResult> DownloadGameFileAsync(string key)
     {
-        throw new NotImplementedException();
+        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.GameKey == key);
+        if (game == null)
+            throw new KeyNotFoundException($"Game with key '{key}' not found.");
+
+        // Convert the Guid to a byte array
+        var gameIdBytes = game.GameId.ToByteArray();
+
+        return new FileContentResult(gameIdBytes, "application/octet-stream")
+        {
+            FileDownloadName = game.GameName
+        };
     }
 
     public async Task InsertGameAsync(Game game)

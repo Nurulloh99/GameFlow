@@ -43,9 +43,14 @@ public class GameService : IGameService
         throw new NotImplementedException();
     }
 
-    public Task<FileContentResult> DownloadGameFileAsync(string key)
+    public async Task<FileContentResult> DownloadGameFileAsync(string key)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(key))
+            throw new ArgumentNullException(nameof(key));
+        var game = await _gameRepository.DownloadGameFileAsync(key);
+        if (game == null)
+            throw new KeyNotFoundException($"Game with key '{key}' not found.");
+        return game;
     }
 
     public Task<ICollection<GameGetDto>> GetAllGamesAsync()
