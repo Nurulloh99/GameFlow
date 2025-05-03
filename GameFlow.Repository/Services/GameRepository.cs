@@ -39,8 +39,6 @@ public class GameRepository : IGameRepository
     }
 
 
-
-
     public async Task InsertGameAsync(Game game)
     {
         await _mainContext.AddAsync(game);
