@@ -19,10 +19,27 @@ public class GameRepository : IGameRepository
         throw new NotImplementedException();
     }
 
-    public Task<FileContentResult> DownloadGameFileAsync(string key)
+    public async Task<FileContentResult> DownloadGameFileAsync(string key)
     {
-        throw new NotImplementedException();
+        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.GameKey == key);
+        if (game == null)
+            throw new KeyNotFoundException($"Game with key '{key}' not found.");
+
+        var filePath = game.FilePath; // Faylga yo‘l, masalan "wwwroot/files/game.zip"
+        if (!System.IO.File.Exists(filePath))
+            throw new FileNotFoundException("Game file not found on the server.");
+
+        var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        var contentType = "application/octet-stream"; // yoki MIME turini aniqlab bering
+
+        return new FileContentResult(fileBytes, contentType)
+        {
+            FileDownloadName = game.GameName + ".zip" // yoki haqiqiy kengaytma
+        };
     }
+
+
+
 
     public async Task InsertGameAsync(Game game)
     {
@@ -74,11 +91,11 @@ public class GameRepository : IGameRepository
 
     public async Task UpdateGameAsync(Game gameDto)
     {
-        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.Id == gameDto.Id);
+        var game = await _mainContext.Games.FirstOrDefaultAsync(x => x.GameId == gameDto.GameId);
         if (game == null)
             throw new ArgumentNullException(nameof(game));
-        game.Name = gameDto.GameName;
-        game.Description = gameDto.GameDescription;
+        game.GameName = gameDto.GameName;
+        game.GameDescription = gameDto.GameDescription;
         game.GameKey = gameDto.GameKey;
         await _mainContext.SaveChangesAsync();
     }
